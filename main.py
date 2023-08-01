@@ -1,18 +1,19 @@
 import argparse
-import time
-
 from quote import Quote
+from email_handler import EmailHandler
 
 class QuoteBot:
-    def __init__(self):
+    def __init__(self, email, password):
         self.quote_handler = Quote()
         # self.db = Database()
-        # self.email_handler = EmailHandler()
+        # self.email_handler = EmailHandler(email, password)
     def daily_quote(self):
         quote, author = self.quote_handler.fetch()
         print(quote, author)
 
 if __name__ == "__main__":
+    EMAIL = 'william.d.j.mcintyre@gmail.com'
+
     ## Create Bot
     bot = QuoteBot()
 
