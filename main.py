@@ -8,22 +8,22 @@ from dotenv import load_dotenv
 class QuoteBot:
     def __init__(self, email, password):
         self.quote_handler = Quote()
-        self.db = Database()
+        self.db_handler = Database()
         self.email_handler = EmailHandler(email, password)
     def send_email(self):
     # Sends an email fetched from the api to the emails stored in the database
         quote, author = self.quote_handler.fetch()
         if quote and author:
-            emails = self.db.get_emails()
+            emails = self.db_handler.get_emails()
             for email in emails:
                 self.email_handler.send("Quote of the Day", f"{quote} by {author}", email)
 
     def add_subscriber(self, email):
     # Insert the email into the database
-        self.db.insert_email(email)
+        self.db_handler.insert_email(email)
     def list_subscribers(self):
     # List off all subscribers (emails within the database)
-        subscribers = self.db.get_emails()
+        subscribers = self.db_handler.get_emails()
         if subscribers:
             print("List of Subscribers:")
             for i, subscriber_email in enumerate(subscribers, 1):
