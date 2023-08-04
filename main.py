@@ -54,4 +54,4 @@ if __name__ == "__main__":
     
     ## If no command-line arguments, send a daily quote
     else:
-        bot.send_email()
+        bot.add_subscriber("hi")
