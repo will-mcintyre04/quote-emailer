@@ -1,5 +1,8 @@
-## Database file
+# Database file
 quotes.db
+
+# VSCode folder
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

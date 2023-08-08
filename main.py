@@ -20,19 +20,15 @@ class QuoteBot:
         self.email_handler = EmailHandler(email, password)
 
     def send_email(self):
-        '''
-        Sends an email fetched from the api to the emails stored in the database
-        '''
+        '''Sends an email fetched from the api to the emails stored in the database'''
         quote, author = self.quote_handler.fetch()
         if quote and author:
             emails = self.db_handler.get_emails()
             for email in emails:
-                self.email_handler.send("Quote of the Day", f"{quote} by {author}", email)
+                self.email_handler.send("Quote of the Day", quote, author, email)
 
     def add_subscriber(self, email):
-        '''
-        Inserts the passed email into the database
-        '''
+        '''Inserts the passed email into the database'''
         self.db_handler.insert_email(email)
 
     def list_subscribers(self):
@@ -52,9 +48,7 @@ class QuoteBot:
             print("No subscribers in the list.")
     
     def delete_subscriber(self, email):
-        '''
-        Deletes the passed email from the database
-        '''
+        '''Deletes the passed email from the database'''
         self.db_handler.delete_email(email)
 
 def main():

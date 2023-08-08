@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from resources.path_helper import get_direct_path
 
 class Database:
     '''
@@ -11,11 +12,17 @@ class Database:
         '''
         Connects to database and initializes tables.
         '''
-        script_directory = os.path.dirname(os.path.abspath(__file__))
-        database_file = os.path.join(script_directory, "quotes.db")
+        self.conn = None
+        self.connect()
 
-        self.conn = sqlite3.connect(database_file)
-        self.create_tables()
+    def connect(self):
+        database_file = get_direct_path("quotes.db")
+
+        try:
+            self.conn = sqlite3.connect(database_file)
+            self.create_tables()
+        except sqlite3.Error as e:
+            print(f"Error connecting to database: {e}")
 
     def create_tables(self):
         '''
@@ -42,9 +49,7 @@ class Database:
             print(f"Error while creating tables: {e}")
 
     def insert_quote(self, quote_text, quote_author):
-        '''
-        Inserts the passed quote text and author into the "quotes" table of the database.
-        '''
+        '''Inserts the passed quote text and author into the "quotes" table of the database.'''
         try:
             self.conn.execute('INSERT INTO quotes (quote, author) VALUES (?, ?)', (quote_text, quote_author))
             self.conn.commit()
@@ -67,9 +72,7 @@ class Database:
             print(f"Error while checking if email existsL {e}")
 
     def insert_email(self, email):
-        '''
-        Inserts the passed email address into the "email" table of the database if it is not a repeat.
-        '''
+        '''Inserts the passed email address into the "email" table of the database if it is not a repeat.'''
         try:
             if self.email_exists(email):
                 print(f"Subscriber {email} already exists in the list.")
@@ -94,9 +97,7 @@ class Database:
             return []
         
     def delete_email(self, email):
-        '''
-        Deletes the passed email from the "email" database.
-        '''
+        '''Deletes the passed email from the "email" database.'''
         try:
             if self.email_exists(email):
                 self.conn.execute('DELETE FROM emails WHERE email = ?', (email,))
@@ -108,7 +109,5 @@ class Database:
             print(f"Error while receiving results: {e}")
 
     def __del__(self):
-        '''
-        Destructor closes the db.
-        '''
+        '''Destructor closes the db.'''
         self.conn.close()
