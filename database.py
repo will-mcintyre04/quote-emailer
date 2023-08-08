@@ -1,15 +1,20 @@
 import sqlite3
+import os
 
 class Database:
     '''
     Handler that works with the quotes.db local database.\n
     Initializes connection and tables, and enables editing and viewing of data.
     '''
+
     def __init__(self):
         '''
         Connects to database and initializes tables.
         '''
-        self.conn = sqlite3.connect('quotes.db')
+        script_directory = os.path.dirname(os.path.abspath(__file__))
+        database_file = os.path.join(script_directory, "quotes.db")
+
+        self.conn = sqlite3.connect(database_file)
         self.create_tables()
 
     def create_tables(self):
