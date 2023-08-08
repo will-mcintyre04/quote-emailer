@@ -1,6 +1,5 @@
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.message import EmailMessage
 
 class EmailHandler:
     '''
@@ -17,18 +16,15 @@ class EmailHandler:
         Sends an email to the passed recipient with the passed subject and body message.
         '''
         try:
-            msg = MIMEMultipart()
+            msg = EmailMessage()
             msg['From'] = self.email
             msg['To'] = recipient
             msg['Subject'] = subject
 
-            msg.attach(MIMEText(body, 'plain'))
-
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login(self.email, self.password)
-            server.sendmail(self.email, recipient, msg.as_string())
-            server.quit()
-            print(f"Email sent to {recipient} successfully!")
+            msg.set_content(body)
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                smtp.login(self.email, self.password) 
+                smtp.send_message(msg)
+                print(f"Email send to {recipient} successfully!")
         except smtplib.SMTPException as e:
             print(f"Error sending email to {recipient}: {e}")

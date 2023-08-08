@@ -2,8 +2,7 @@ import sqlite3
 
 class Database:
     '''
-    Handler that works with the quotes.db local database.
-    
+    Handler that works with the quotes.db local database.\n
     Initializes connection and tables, and enables editing and viewing of data.
     '''
     def __init__(self):
@@ -16,10 +15,8 @@ class Database:
     def create_tables(self):
         '''
         Creates two tables in the db if they do not exist: "emails" and "quotes".
-        
-        "quotes" contains an id (primary key), and quote and author attributes
-
-        "emails" contains an id (primary key), and email attributes
+        \n\t"quotes" contains an id (primary key), and quote and author attributes
+        \n\t"emails" contains an id (primary key), and email attributes
         '''
         try:
             self.conn.execute('''
@@ -81,7 +78,7 @@ class Database:
     def get_emails(self):
         '''
         Returns a list of the email addresses found in the emails table of the database:
-        ["email@example.com","email2@example.com"]
+        \n\t["email@example.com","email2@example.com"]
         '''
         try:
             cursor = self.conn.execute('SELECT email FROM emails')

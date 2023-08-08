@@ -75,16 +75,16 @@ def main():
     bot = QuoteBot(EMAIL, PASS)
 
     # Check for arguments and impliment respective requests
-    if args.email:
-        bot.add_subscriber(args.email)
-    elif args.list:
+    if args.list:
         bot.list_subscribers()
+    elif args.email:
+        bot.add_subscriber(args.email)
     elif args.delete:
         bot.delete_subscriber(args.delete)
     
     # If no command-line arguments, send a daily quote
     else:
-        bot.add_subscriber("william.d.j.mcintyre@gmail.com")
+        bot.send_email()
 
 if __name__ == "__main__":
     main()
