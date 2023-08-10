@@ -5,17 +5,55 @@ from resources.path_helper import get_direct_path
 class EmailHandler:
     '''
     Handler for sending emails.
+
+    Attributes
+    ----------
+    email : str
+        the address of the sending email
+    password : str
+        the password of the sending email
+    html_template : str
+        the sound that the animal makes
+
+    Methods
+    -------
+    send(subject, quote, author, recipient)
+        Sends a formatted email to the recipient with the given subject and quote/author
     '''
+
+    html_template = "email_template.html"
+
     def __init__(self, email, password):
         '''
-        Stores email and password of sender.
+        Parameters
+        ----------
+        email : str
+            the address of the sending email
+        password : str
+            the password of the sending email
         '''
         self.email = email
         self.password = password
-        self.html_template = "email_template.html"
+
     def send(self, subject, quote, author, recipient):
         '''
-        Sends an email to the passed recipient with the passed subject and body message.
+        Sends a formatted email to a recipient with a quote.
+
+        Parameters
+        ----------
+        subject : str
+            the subject of the email message
+        quote : str
+            quote string
+        author : str
+            name of the author of the quote
+        recipient : str
+            email address of the recipient of the email
+
+        Exceptions
+        ----------
+        smtplib.SMTPException
+            if there is an error sending the email to the recipient
         '''
         try:
             msg = EmailMessage()
