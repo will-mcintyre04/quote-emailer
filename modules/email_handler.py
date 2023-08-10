@@ -1,6 +1,6 @@
 import smtplib
 from email.message import EmailMessage
-from resources.path_helper import get_direct_path
+from modules.path_helper import get_direct_path
 
 class EmailHandler:
     '''
