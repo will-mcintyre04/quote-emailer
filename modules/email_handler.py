@@ -54,6 +54,7 @@ class EmailHandler:
         ----------
         smtplib.SMTPException
             if there is an error sending the email to the recipient
+            
         '''
         try:
             
