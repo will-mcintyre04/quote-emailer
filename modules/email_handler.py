@@ -56,20 +56,25 @@ class EmailHandler:
             if there is an error sending the email to the recipient
         '''
         try:
-            msg = EmailMessage()
-            msg['From'] = self.email
-            msg['To'] = ", ".join(recipients) #Convert list to comma-seperated string
-            msg['Subject'] = subject
-
+            
             # Read the HTML template and format it with the quote and author
             with open(get_direct_path(self.html_template), 'r') as html_file:
                 html_template = html_file.read()
                 formatted_html = html_template.format(quote=quote, author=author)
 
-            msg.set_content(formatted_html, subtype='html')
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                smtp.login(self.email, self.password) 
-                smtp.send_message(msg)
-                print(f"Email(s) sent successfully!")
+                smtp.login(self.email, self.password)
+            
+                for recipient in recipients:
+                    msg = EmailMessage()
+                    msg['From'] = self.email
+                    msg['Subject'] = subject
+                    msg['To'] = recipient
+
+
+                    msg.set_content(formatted_html, subtype='html')
+                    smtp.send_message(msg)
+
+                    print(f"Email sent to {recipient} succesfully")
         except smtplib.SMTPException as e:
-            print(f"Error sending emails: {e}")
+            print(f"Error sending email: {e}")
