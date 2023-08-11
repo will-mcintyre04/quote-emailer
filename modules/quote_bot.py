@@ -50,8 +50,7 @@ class QuoteBot:
         quote, author = self.quote_handler.fetch()
         if quote and author:
             emails = self.db_handler.get_emails()
-            for email in emails:
-                self.email_handler.send("Quote of the Day", quote, author, email)
+            self.email_handler.send("Quote of the Day", quote, author, emails)
 
     def add_subscriber(self, email):
         '''Inserts the passed email into the database'''

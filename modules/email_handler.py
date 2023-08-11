@@ -35,9 +35,9 @@ class EmailHandler:
         self.email = email
         self.password = password
 
-    def send(self, subject, quote, author, recipient):
+    def send(self, subject, quote, author, recipients):
         '''
-        Sends a formatted email to a recipient with a quote.
+        Sends a formatted email to a list of recipients with a quote.
 
         Parameters
         ----------
@@ -47,8 +47,8 @@ class EmailHandler:
             quote string
         author : str
             name of the author of the quote
-        recipient : str
-            email address of the recipient of the email
+        recipient : list
+            list of recipient email addresses
 
         Exceptions
         ----------
@@ -58,7 +58,7 @@ class EmailHandler:
         try:
             msg = EmailMessage()
             msg['From'] = self.email
-            msg['To'] = recipient
+            msg['To'] = ", ".join(recipients) #Convert list to comma-seperated string
             msg['Subject'] = subject
 
             # Read the HTML template and format it with the quote and author
@@ -67,10 +67,9 @@ class EmailHandler:
                 formatted_html = html_template.format(quote=quote, author=author)
 
             msg.set_content(formatted_html, subtype='html')
-
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
                 smtp.login(self.email, self.password) 
                 smtp.send_message(msg)
-                print(f"Email sent to {recipient} successfully!")
+                print(f"Email(s) sent successfully!")
         except smtplib.SMTPException as e:
-            print(f"Error sending email to {recipient}: {e}")
+            print(f"Error sending emails: {e}")
