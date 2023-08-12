@@ -5,10 +5,13 @@ from dotenv import load_dotenv
 
 def main():
     # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Quote of the Day Bot")
+    parser = argparse.ArgumentParser(description="Sends motivational quotes fetched from ZenQuotes API\
+                                     (https://zenquotes.io/) to email addresses stored in a local database.")
     parser.add_argument("--list", "-l", action="store_true", help="List all subscribers")
-    parser.add_argument("--email", "-e", type=str, help="Email address to add to database")
-    parser.add_argument("--delete", "-d", type=str, help="Email address to delete from database")
+    parser.add_argument("--email", "-e", type=str, nargs="+",
+                        help="Email address(es) to add to database")
+    parser.add_argument("--delete", "-d", type=str, nargs="+",
+                        help="Email address(es) to delete from database")
 
     args = parser.parse_args()
 
@@ -24,7 +27,7 @@ def main():
     if args.list:
         bot.list_subscribers()
     elif args.email:
-        bot.add_subscriber(args.email)
+        bot.add_subscribers(args.email)
     elif args.delete:
         bot.delete_subscriber(args.delete)
 

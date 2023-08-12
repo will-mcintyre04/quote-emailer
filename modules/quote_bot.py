@@ -24,12 +24,12 @@ class QuoteBot:
     ------
     send_email()
         fetches quote from api and sends email to all addresses in database
-    add_subscriber(email : str)
-        add the email into the database
-    list_subscribers
+    add_subscribers(emails)
+        add the emails into the database
+    list_subscribers()
         prints the list of subscribers in the database to the terminal
-    delete_subscriber(email)
-        deletes the email from the database
+    delete_subscribers(emails)
+        deletes the emails from the database
     '''
 
     def __init__(self, email, password):
@@ -52,9 +52,9 @@ class QuoteBot:
             emails = self.db_handler.get_emails()
             self.email_handler.send("Quote of the Day", quote, author, emails)
 
-    def add_subscriber(self, email):
-        '''Inserts the passed email into the database'''
-        self.db_handler.insert_email(email)
+    def add_subscribers(self, emails):
+        '''Inserts the passed emails into the database'''
+        self.db_handler.insert_emails(emails)
 
     def list_subscribers(self):
         '''
@@ -73,6 +73,6 @@ class QuoteBot:
         else:
             print("No subscribers in the list.")
     
-    def delete_subscriber(self, email):
+    def delete_subscribers(self, emails):
         '''Deletes the passed email from the database'''
-        self.db_handler.delete_email(email)
+        self.db_handler.delete_emails(emails)

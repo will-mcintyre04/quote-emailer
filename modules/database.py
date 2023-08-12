@@ -22,11 +22,11 @@ class Database:
         inserts quote and author into db
     email_exists(email : str)
         if the email exists in the database, return true
-    insert_email(email : str)
-        inserts email into db
+    insert_emails(email : list)
+        inserts emails into db
     get_emails()
         returns list of emails in "email" table of db
-    delete_email(email : str)
+    delete_emails(email : str)
         deleted email from the  db
     '''
 
@@ -130,27 +130,29 @@ class Database:
         except sqlite3.Error as e:
             print(f"Error while checking if email exists {e}")
 
-    def insert_email(self, email):
+    def insert_emails(self, emails):
         '''
-        Inserts the passed email address into the "email" table of the database if it is not a repeat.
+        Inserts the passed email addresses into the "email" table of the database if it is not a repeat.
         
         Parameters
         ----------
-        email : str
-            email address to be inserted
+        emails : list<string>
+            list of email addresses to be inserted
 
         Exceptions
         ----------
         sqlite3.Error
             if there is an error inserting into the database
         '''
+
         try:
-            if self.email_exists(email):
-                print(f"Subscriber {email} already exists in the list.")
-            else:
-                self.conn.execute('INSERT INTO emails (email) VALUES (?)', (email,))
-                self.conn.commit()
-                print(f"Subscriber {email} added successfully!")
+            for email in emails:
+                if self.email_exists(email):
+                    print(f"Subscriber {email} already exists in the list.")
+                else:
+                    self.conn.execute('INSERT INTO emails (email) VALUES (?)', (email,))
+                    self.conn.commit()
+                    print(f"Subscriber {email} added successfully!")
         except sqlite3.Error as e:
             print(f"Error while inserting email: {e}")
 
@@ -161,7 +163,7 @@ class Database:
 
         Returns
         -------
-        list
+        list<string>
             a list of strings representing emails in the database
 
         Exceptions
@@ -169,6 +171,7 @@ class Database:
         sqlite3.Error
             if there is an email retrieving from the database
         '''
+
         try:
             cursor = self.conn.execute('SELECT email FROM emails')
             emails = [row[0] for row in cursor.fetchall()]
@@ -177,26 +180,27 @@ class Database:
             print(f"Error while retrieving emails: {e}")
             return []
         
-    def delete_email(self, email):
+    def delete_emails(self, emails):
         '''
-        Deletes the passed email from the "email" table of database.
+        Deletes the passed emails from the "email" table of database.
 
         Parameters
         ----------
-        email : str
-            email address to be deleted from database
+        emails : list<string>
+            list of emails to be deleted from database
         
         Exceptions
         ----------
         sqlite3.Error
             if there os an error deleting from database
-        
         '''
+
         try:
-            if self.email_exists(email):
-                self.conn.execute('DELETE FROM emails WHERE email = ?', (email,))
-                self.conn.commit()
-                print(f"Email {email} succesfully deleted.")
+            for email in emails:
+                if self.email_exists(email):
+                    self.conn.execute('DELETE FROM emails WHERE email = ?', (email,))
+                    self.conn.commit()
+                    print(f"Email {email} succesfully deleted.")
             else:
                 print(f"Email {email} does not exist in the database.")
         except sqlite3.Error as e:
