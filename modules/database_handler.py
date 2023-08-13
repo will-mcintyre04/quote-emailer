@@ -1,7 +1,7 @@
 import sqlite3
 from modules.path_helper import get_direct_path
 
-class Database:
+class DatabaseHandler:
     '''
     Handler that works with the quotes.db local database.
 

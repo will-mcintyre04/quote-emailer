@@ -1,6 +1,6 @@
 from modules.email_handler import EmailHandler
-from modules.quote import Quote
-from modules.database import Database
+from modules.quote_handler import QuoteHandler
+from modules.database_handler import DatabaseHandler
 
 class QuoteBot:
     '''
@@ -13,9 +13,9 @@ class QuoteBot:
 
     Attributes
     ----------
-    quote_handler : Quote()
+    quote_handler : QuoteHandler()
         handler for fetching quotes
-    db_handler : Database() 
+    db_handler : DatabaseHandler() 
         handler for interacting the database
     email_handler = EmailHandler()
         handler for sending emails
@@ -41,8 +41,8 @@ class QuoteBot:
         password : str
             password of the sender email
         '''
-        self.quote_handler = Quote()
-        self.db_handler = Database()
+        self.quote_handler = QuoteHandler()
+        self.db_handler = DatabaseHandler()
         self.email_handler = EmailHandler(email, password)
 
     def send_email(self):

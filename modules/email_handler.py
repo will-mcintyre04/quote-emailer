@@ -54,18 +54,18 @@ class EmailHandler:
         ----------
         smtplib.SMTPException
             if there is an error sending the email to the recipient
-            
+
         '''
         try:
-            
             # Read the HTML template and format it with the quote and author
             with open(get_direct_path(self.html_template), 'r') as html_file:
                 html_template = html_file.read()
                 formatted_html = html_template.format(quote=quote, author=author)
 
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+
                 smtp.login(self.email, self.password)
-            
+
                 for recipient in recipients:
                     msg = EmailMessage()
                     msg['From'] = self.email

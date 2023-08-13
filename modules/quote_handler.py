@@ -1,6 +1,6 @@
 import requests
 
-class Quote():
+class QuoteHandler():
     '''
     Handler that works with the api to fetch a motivational quote.
 
