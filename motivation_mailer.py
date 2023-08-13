@@ -18,7 +18,7 @@ def main():
     # Config environment variables
     load_dotenv()
     PASS = os.getenv('GMAIL_PASSWORD')
-    EMAIL = 'william.d.j.mcintyre@gmail.com'
+    EMAIL = os.getenv('GMAIL_ADDRESS')
 
     # Create Bot
     bot = QuoteBot(EMAIL, PASS)
