@@ -8,7 +8,7 @@ def main():
     parser = argparse.ArgumentParser(description="Sends motivational quotes fetched from ZenQuotes API\
                                      (https://zenquotes.io/) to email addresses stored in a local database.")
     parser.add_argument("--list", "-l", action="store_true", help="List all subscribers")
-    parser.add_argument("--email", "-e", type=str, nargs="+",
+    parser.add_argument("--add", "-a", type=str, nargs="+",
                         help="Email address(es) to add to database")
     parser.add_argument("--delete", "-d", type=str, nargs="+",
                         help="Email address(es) to delete from database")
@@ -26,8 +26,8 @@ def main():
     # Check for arguments and impliment respective requests
     if args.list:
         bot.list_subscribers()
-    elif args.email:
-        bot.add_subscribers(args.email)
+    elif args.add:
+        bot.add_subscribers(args.add)
     elif args.delete:
         bot.delete_subscribers(args.delete)
 
