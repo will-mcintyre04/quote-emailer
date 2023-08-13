@@ -201,8 +201,8 @@ class Database:
                     self.conn.execute('DELETE FROM emails WHERE email = ?', (email,))
                     self.conn.commit()
                     print(f"Email {email} succesfully deleted.")
-            else:
-                print(f"Email {email} does not exist in the database.")
+                else:
+                    print(f"Email {email} does not exist in the database.")
         except sqlite3.Error as e:
             print(f"Error while receiving results: {e}")
 

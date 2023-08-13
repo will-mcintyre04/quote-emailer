@@ -29,7 +29,7 @@ def main():
     elif args.email:
         bot.add_subscribers(args.email)
     elif args.delete:
-        bot.delete_subscriber(args.delete)
+        bot.delete_subscribers(args.delete)
 
     # If no command-line arguments, send a daily quote
     else:
