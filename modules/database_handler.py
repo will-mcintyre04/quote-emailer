@@ -30,10 +30,9 @@ class DatabaseHandler:
         deleted email from the  db
     '''
 
-    database_file = get_direct_path("quotes.db")
-
-    def __init__(self):
+    def __init__(self, database):
         self.conn = None
+        self.database_file = get_direct_path(database)
         self.connect()
 
     def connect(self):

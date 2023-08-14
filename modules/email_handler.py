@@ -56,6 +56,9 @@ class EmailHandler:
             if there is an error sending the email to the recipient
 
         '''
+        if not recipients:
+            print("Recipient list is empty. No emails sent.")
+            return
         try:
             # Read the HTML template and format it with the quote and author
             with open(get_direct_path(self.html_template), 'r') as html_file:

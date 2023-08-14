@@ -32,7 +32,7 @@ class QuoteBot:
         deletes the emails from the database
     '''
 
-    def __init__(self, email, password):
+    def __init__(self, email, password, database):
         '''
         Parameters
         ----------
@@ -42,7 +42,7 @@ class QuoteBot:
             password of the sender email
         '''
         self.quote_handler = QuoteHandler()
-        self.db_handler = DatabaseHandler()
+        self.db_handler = DatabaseHandler(database)
         self.email_handler = EmailHandler(email, password)
 
     def send_email(self):
