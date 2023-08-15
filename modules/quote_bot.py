@@ -53,7 +53,14 @@ class QuoteBot:
             self.email_handler.send("Quote of the Day", quote, author, emails)
 
     def add_subscribers(self, emails):
-        '''Inserts the passed emails into the database'''
+        '''
+        Inserts the passed emails into the database
+        
+        Parameters
+        ----------
+        emails : list<string>
+            list of emails to add to database
+        '''
         self.db_handler.insert_emails(emails)
 
     def list_subscribers(self):

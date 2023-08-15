@@ -28,7 +28,7 @@ class QuoteHandler():
         Returns
         -------
         list
-            list containing quote text and author name.
+            list containing quote text and author name
 
         Exceptions
         ----------
