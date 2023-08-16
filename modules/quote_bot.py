@@ -41,6 +41,7 @@ class QuoteBot:
         password : str
             password of the sender email
         '''
+
         self.quote_handler = QuoteHandler()
         self.db_handler = DatabaseHandler(database)
         self.email_handler = EmailHandler(email, password)
@@ -61,6 +62,7 @@ class QuoteBot:
         emails : list<string>
             list of emails to add to database
         '''
+
         self.db_handler.insert_emails(emails)
 
     def list_subscribers(self):
