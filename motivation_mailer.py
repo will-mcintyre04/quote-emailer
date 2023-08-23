@@ -69,7 +69,7 @@ def update_env_variable(variable_name, new_value):
 
     write_to_file(".env", updated_lines)
 
-def check_none(password, email, db_filename):
+def check_none(password, email, db_config):
     """
     Checks if required values are provided.
 
@@ -79,8 +79,8 @@ def check_none(password, email, db_filename):
         email password
     email : str
         sending email address
-    db_filename : str
-        name of the database file
+    db_config : str
+        database configuration
     
     Raises
     ------
@@ -92,8 +92,8 @@ def check_none(password, email, db_filename):
         raise ValueError("Sending email address is required.")
     elif not password:
         raise ValueError("Email password is required.")
-    elif not db_filename:
-        raise ValueError("Database filename is required.")
+    elif not db_config:
+        raise ValueError("Database configuration is required.")
 
 
 def check_file_exists(file_name):
@@ -111,7 +111,7 @@ def check_file_exists(file_name):
         if the file does not exist
     '''
     if not os.path.exists(os.path.join(".", file_name)):
-        raise FileNotFoundError(".env file not found.")
+        raise FileNotFoundError(f"{file_name} file was not found.")
 
 def config_env(args):
     '''
@@ -125,13 +125,9 @@ def config_env(args):
     Returns
     -------
     str, str, str
-        the email, password, and database filename
-    
-    Raises
-    ------
-    ValueError
-        if an invalid database file is detected
+        the email, password, and database configuration
     '''
+
     # Check if .env file exists
     check_file_exists(".env")
 
@@ -141,23 +137,18 @@ def config_env(args):
     if args.password:
         update_env_variable("GMAIL_PASSWORD", args.password)
     if args.database:
-        update_env_variable("DB_NAME", args.database)
+        update_env_variable("DB_CONFIG", args.database)
 
     # Fetch env variables
     load_dotenv()
     PASS = args.password or os.getenv('GMAIL_PASSWORD')
     EMAIL = args.email or os.getenv('GMAIL_ADDRESS')
-    DB_FILENAME = args.database or os.getenv('DB_NAME')
+    DB_CONFIG = args.database or os.getenv('DB_CONFIG')
 
     # Check that all variables are collected
-    check_none(PASS, EMAIL, DB_FILENAME)
+    check_none(PASS, EMAIL, DB_CONFIG)
 
-    # Check database file validity
-    if args.database and not args.database.endswith(".db"):
-        raise ValueError("Invalid configuration: Database filename must have the .db extension")
-
-
-    return EMAIL, PASS, DB_FILENAME
+    return EMAIL, PASS, DB_CONFIG
 
 def main():
     """
@@ -174,17 +165,18 @@ def main():
                             help="Email address(es) to add to database")
         parser.add_argument("--delete", "-d", type=str, nargs="+",
                             help="Email address(es) to delete from database")
-        parser.add_argument("--database", "-db", type=str, help="Custom database file name")
+        parser.add_argument("--database", "-db", type=str,
+                            help="Database configuration ('production' or 'development')")
         parser.add_argument("--email", "-e", type=str, help="Sending email address")
-        parser.add_argument("--password", "-p", type=str, help="Gmail application password")
+        parser.add_argument("--password", "-p", type=str, help="Sending email password")
 
         args = parser.parse_args()
 
         # Load and config environment variables
-        EMAIL, PASS, DB_FILENAME = config_env(args)
+        EMAIL, PASS, DB_CONFIG = config_env(args)
 
         # Create Bot
-        bot = QuoteBot(EMAIL, PASS, DB_FILENAME)
+        bot = QuoteBot(EMAIL, PASS, DB_CONFIG)
 
         # Check for arguments and impliment respective requests
         if args.list:

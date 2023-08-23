@@ -78,7 +78,7 @@ class QuoteBot:
         if subscribers:
             print("List of Subscribers:")
             for i, subscriber_email in enumerate(subscribers, 1):
-                print(f"{i}. {subscriber_email}")
+                print(f"{i}. {subscriber_email.email}")
         else:
             print("No subscribers in the list.")
     

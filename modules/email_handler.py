@@ -72,9 +72,9 @@ class EmailHandler:
                     msg = EmailMessage()
                     msg['From'] = self.email
                     msg['Subject'] = subject
-                    msg['To'] = recipient
+                    msg['To'] = recipient.email
 
-                    formatted_html = html_template.format(quote=quote, author=author, email=recipient)
+                    formatted_html = html_template.format(quote=quote, author=author, email=recipient.email)
                     msg.set_content(formatted_html, subtype='html')
                     smtp.send_message(msg)
 
