@@ -56,7 +56,7 @@ class DatabaseHandler:
         elif database_type in ["PRODUCTION", "PROD"]:
             database_url = os.getenv("MYSQL_URI")
         else:
-            raise ValueError("Invalid database_type provided. Choose 'development' or 'production'.")
+            raise ValueError("Invalid database configuration provided. Choose 'development' or 'production'.")
         
         # Factory that establishes connection to db
         self.engine = create_engine(database_url)
