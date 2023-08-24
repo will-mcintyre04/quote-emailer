@@ -1,6 +1,7 @@
 import smtplib
 from email.message import EmailMessage
 from modules.path_helper import get_direct_path
+import os
 
 class EmailHandler:
     '''
@@ -13,11 +14,11 @@ class EmailHandler:
     password : str
         the password of the sending email
     html_template : str
-        the sound that the animal makes
+        name of the html template
 
     Methods
     -------
-    send(subject : str, quote : str, author : str, recipients : list<str>)
+    send(subject : str, quote : str, author : str, recipients : list[str])
         Sends a formatted email to the recipient with the given subject and quote/author
     '''
 
@@ -32,6 +33,7 @@ class EmailHandler:
         password : str
             the password of the sending email
         '''
+
         self.email = email
         self.password = password
 
@@ -47,8 +49,8 @@ class EmailHandler:
             quote string
         author : str
             name of the author of the quote
-        recipient : list
-            list of recipient email addresses
+        recipient : list[modules.models.Email]
+            list of modules.models.Email objects representing recipients
 
         Exceptions
         ----------
@@ -60,10 +62,11 @@ class EmailHandler:
             print("Recipient list is empty. No emails sent.")
             return
         try:
-            # Read the HTML template and format it with the quote and author
-            with open(get_direct_path(self.html_template), 'r') as html_file:
+            # Open the html template from the template folder
+            with open(get_direct_path(os.path.join("templates", self.html_template)), 'r') as html_file:
                 html_template = html_file.read()
 
+            # Send the emails to each recipient
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
 
                 smtp.login(self.email, self.password)

@@ -30,7 +30,7 @@ def write_to_file(file_path, lines):
     ----------
     file_path : str
         the path to the file.
-    lines : list<string>
+    lines : list[string]
         the lines to write to the file.
     """
 
@@ -160,15 +160,15 @@ def main():
         # Parse command-line arguments
         parser = argparse.ArgumentParser(description="Sends motivational quotes fetched from ZenQuotes API\
                                         (https://zenquotes.io/) to email addresses stored in a local database.")
-        parser.add_argument("--list", "-l", action="store_true", help="List all subscribers")
+        parser.add_argument("--list", "-l", action="store_true", help="list all subscribers")
         parser.add_argument("--add", "-a", type=str, nargs="+",
-                            help="Email address(es) to add to database")
+                            help="email address(es) to add to database")
         parser.add_argument("--delete", "-d", type=str, nargs="+",
-                            help="Email address(es) to delete from database")
+                            help="email address(es) to delete from database")
         parser.add_argument("--database", "-db", type=str,
-                            help="Database configuration ('production' or 'development')")
-        parser.add_argument("--email", "-e", type=str, help="Sending email address")
-        parser.add_argument("--password", "-p", type=str, help="Sending email password")
+                            help="database configuration ('production' or 'development')")
+        parser.add_argument("--email", "-e", type=str, help="sending email address")
+        parser.add_argument("--password", "-p", type=str, help="sending email password")
 
         args = parser.parse_args()
 
@@ -190,7 +190,7 @@ def main():
             bot.send_email()
 
     except Exception as e:
-        print(f"Error: {e} \nUse '-h' or '--help' to show help.")
+        print(f"Error: {e} \n\nUse '-h' or '--help' to show help.")
 
 if __name__ == "__main__":
     main()
