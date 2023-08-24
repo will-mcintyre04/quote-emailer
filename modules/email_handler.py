@@ -78,6 +78,6 @@ class EmailHandler:
                     msg.set_content(formatted_html, subtype='html')
                     smtp.send_message(msg)
 
-                    print(f"Email sent to {recipient} succesfully")
+                    print(f"Email sent to {recipient.email} succesfully")
         except smtplib.SMTPException as e:
             print(f"Error sending email: {e}")
