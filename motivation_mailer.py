@@ -65,7 +65,7 @@ def update_env_variable(variable_name, new_value):
 
     # If the variable wasn't found, add it to the end of the file
     if not variable_updated:
-        updated_lines.append(f"{variable_name}={new_value}\n")
+        updated_lines.append(f"\n{variable_name}={new_value}")
 
     write_to_file(".env", updated_lines)
 
@@ -190,7 +190,7 @@ def main():
             bot.send_email()
 
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error: {e} \nUse '-h' or '--help' to show help.")
 
 if __name__ == "__main__":
     main()

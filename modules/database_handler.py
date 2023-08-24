@@ -212,11 +212,48 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from modules.models import Email, Base
+import os
 
 class DatabaseHandler:
-    def __init__(self, database_url):
-        self.engine = create_engine(database_url)
-        self.Session = sessionmaker(bind=self.engine)
+    '''
+     Handler that connects to and edits the database dependant on environment.
+
+     Attributes
+     ----------
+     engine : sqlalchemy.engine.base.Engine
+        The database engine that establishes the connection to the database.
+    Session : sqlalchemy.orm.session.Session
+        Session factory for creating individual connections to the database.
+
+    Methods
+    -------
+    connect()
+        Connects to the database and initializes tables if they do not exist.
+    email_exists(email: str) -> bool
+        Checks if an email exists in the database.
+    insert_emails(emails: list)
+        Inserts new emails into the database.
+    delete_emails(emails: list)
+        Deletes emails from the database.
+    get_emails() -> list
+        Retrieves a list of emails from the database.
+
+    Parameters
+    ----------
+    database_url : str
+        The URL to connect to the database.
+     '''
+    def __init__(self, database_type):
+        database_type = database_type.upper()
+        if database_type in ["DEVELOPMENT", "DEV"]:
+            database_url = "sqlite:///emails.db"
+        elif database_type in ["PRODUCTION", "PROD"]:
+            database_url = os.getenv("MYSQL_URI")
+        else:
+            raise ValueError("Invalid database_type provided. Choose 'development' or 'production'.")
+        
+        self.engine = create_engine(database_url) # Factory that establishes connection to db
+        self.Session = sessionmaker(bind=self.engine) # Individual connections to db for abstract/high level interaction
 
         self.connect()
 

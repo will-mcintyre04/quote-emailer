@@ -17,7 +17,7 @@ class EmailHandler:
 
     Methods
     -------
-    send(subject, quote, author, recipient)
+    send(subject : str, quote : str, author : str, recipients : list<str>)
         Sends a formatted email to the recipient with the given subject and quote/author
     '''
 
