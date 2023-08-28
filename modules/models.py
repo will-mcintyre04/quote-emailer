@@ -8,4 +8,4 @@ class Email(Base):
     __tablename__ = 'emails'
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, unique=True)
+    address = Column(String, unique=True)

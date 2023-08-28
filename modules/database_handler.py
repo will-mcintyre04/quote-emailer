@@ -102,7 +102,7 @@ class DatabaseHandler:
 
         try:
             session = self.Session()
-            count = session.query(Email).filter_by(email=email).count()
+            count = session.query(Email).filter_by(address=email).count()
             return count > 0
         except Exception as e:
             print(f"Error while checking if email exists: {e}")
@@ -128,7 +128,7 @@ class DatabaseHandler:
                 if self.email_exists(email):
                     print(f"Subscriber {email} already exists in the list.")
                 else:
-                    new_email = Email(email=email)
+                    new_email = Email(address=email)
                     session.add(new_email)
                     session.commit()
                     print(f"Subscriber {email} added successfully!")
@@ -155,7 +155,7 @@ class DatabaseHandler:
             session = self.Session()
             for email in emails:
                 if self.email_exists(email):
-                    email_to_delete = session.query(Email).filter_by(email=email).first()
+                    email_to_delete = session.query(Email).filter_by(address=email).first()
                     session.delete(email_to_delete)
                     session.commit()
                     print(f"Email {email} successfully deleted.")
