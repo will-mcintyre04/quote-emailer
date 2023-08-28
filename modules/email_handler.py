@@ -75,12 +75,12 @@ class EmailHandler:
                     msg = EmailMessage()
                     msg['From'] = self.email
                     msg['Subject'] = subject
-                    msg['To'] = recipient.email
+                    msg['To'] = recipient.address
 
-                    formatted_html = html_template.format(quote=quote, author=author, email=recipient.email)
+                    formatted_html = html_template.format(quote=quote, author=author, email=recipient.address)
                     msg.set_content(formatted_html, subtype='html')
                     smtp.send_message(msg)
 
-                    print(f"Email sent to {recipient.email} succesfully")
+                    print(f"Email sent to {recipient.address} succesfully")
         except smtplib.SMTPException as e:
             print(f"Error sending email: {e}")
