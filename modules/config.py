@@ -93,24 +93,6 @@ def check_none(password, email, db_config):
     elif not db_config:
         raise ValueError("Database configuration is required.")
 
-
-def check_file_exists(file_name):
-    '''
-    Checks if the file name exists in the working directory.
-
-    Parameters
-    ----------
-    file_name : str
-        name of the file to check.
-    
-    Raises
-    ------
-    FileNotFoundError
-        if the file does not exist
-    '''
-    if not os.path.exists(os.path.join(".", file_name)):
-        raise FileNotFoundError(f"{file_name} file was not found.")
-
 def config_env(args):
     '''
     Configures and checks environment variables and updates them if arguments are inputted.
@@ -125,9 +107,6 @@ def config_env(args):
     str, str, str
         the email, password, and database configuration
     '''
-
-    # Check if .env file exists
-    check_file_exists(".env")
 
     # Update environment variables if new values provided
     if args.email:
