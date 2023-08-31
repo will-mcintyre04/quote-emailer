@@ -47,7 +47,7 @@ class DatabaseHandler:
         Raises
         ------
         ValueError
-            if the database configuration type is invalid.
+            if the database configuration type is invalid or no production uri is inputted.
         """
 
         database_type = database_type.upper()
@@ -55,6 +55,8 @@ class DatabaseHandler:
             database_url = "sqlite:///emails.db"
         elif database_type in ["PRODUCTION", "PROD"]:
             database_url = os.getenv("MYSQL_URI")
+            if not database_url:
+                raise ValueError("No production MySQL URI provided.")
         else:
             raise ValueError("Invalid database configuration provided. Choose 'development' or 'production'.")
         
