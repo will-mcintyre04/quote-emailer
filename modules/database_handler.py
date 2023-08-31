@@ -34,9 +34,11 @@ class DatabaseHandler:
      '''
     def __init__(self, database_type):
         """
-        Establishes a connection to the engine and creates a sessionmaker for database interaction.
+        Establishes a connection to the engine and creates a sessionmaker
+        for database interaction.
 
-        If the database type is 'production', connects to the PythonAnywhere MySQL database.
+        If the database type is 'production', connects to the PythonAnywhere 
+        MySQL database.
         If the database type is 'development', connects to SQLite.
 
         Parameters
@@ -47,7 +49,8 @@ class DatabaseHandler:
         Raises
         ------
         ValueError
-            if the database configuration type is invalid or no production uri is inputted.
+            if the database configuration type is invalid or no production
+            uri is inputted.
         """
 
         database_type = database_type.upper()
@@ -58,7 +61,8 @@ class DatabaseHandler:
             if not database_url:
                 raise ValueError("No production MySQL URI provided.")
         else:
-            raise ValueError("Invalid database configuration provided. Choose 'development' or 'production'.")
+            raise ValueError("Invalid database configuration provided. \
+                             Choose 'development' or 'production'.")
         
         # Factory that establishes connection to db
         self.engine = create_engine(database_url)
