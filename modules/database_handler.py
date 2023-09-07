@@ -8,7 +8,7 @@ class DatabaseHandler:
     Handler that connects to and edits the database dependant on environment.
 
     Attributes
-     ----------
+    ----------
     engine : sqlalchemy.engine.base.Engine
         The database engine that establishes the connection to the database.
     Session : sqlalchemy.orm.session.Session
