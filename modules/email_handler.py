@@ -77,7 +77,12 @@ class EmailHandler:
                     msg['Subject'] = subject
                     msg['To'] = recipient.address
 
-                    formatted_html = html_template.format(quote=quote, author=author, email=recipient.address)
+                    formatted_html = html_template.format(
+                        quote=quote,
+                        author=author,
+                        email=recipient.address,
+                        link=f"willymac.pythonanywhere.com/delete_email/{recipient.address}"
+                    )
                     msg.set_content(formatted_html, subtype='html')
                     smtp.send_message(msg)
 
