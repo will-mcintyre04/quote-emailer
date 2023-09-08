@@ -10,9 +10,9 @@ def parse_arguments():
         an object containing the command-line arguments
     '''
     parser = argparse.ArgumentParser(
-            description=("Motivation Mailer: Send quotes fetched from ZenQuotes"
+            description=("Mindfuel: Send quotes fetched from ZenQuotes"
                          "API (https://zenquotes.io/) to email addresses stored"
-                         "in a database."
+                         " in a database."
             ),
             epilog=("For further documentation and source code, view:"
                     "https://github.com/will-mcintyre04/quote-emailer"
