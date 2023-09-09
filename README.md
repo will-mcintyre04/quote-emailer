@@ -17,7 +17,7 @@ This script encapsulates the back-end database management/editing, quote API fet
 
 Mindfuel is a web application designed to inspire and motivate its users with daily quotes delivered to their inbox. This Python script automates the process by fetching motivational quotes from the ZenQuotes API and sending them to subscribers via email.
 
->See below for an example of the email template.
+>See below for an example of the email template:
 <div align= "center">
 <img src = "https://github.com/will-mcintyre04/flask-practice/assets/78566536/daf2ba44-45aa-4e9a-83db-7e6c81aeb531" style="width: 800px;">
 </div><br>
