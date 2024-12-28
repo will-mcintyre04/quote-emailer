@@ -25,7 +25,13 @@ class DatabaseHandler:
     delete_emails(emails: list)
         Deletes emails from the database.
     get_emails() -> list
-        Retrieves a list of emails from the database.
+        Retrieves a list of email objects from the database.
+    upload_quotes_to_db(quotes: list)
+        Uploads a list of quotes to the database.
+    get_first_quote() -> Quote or None
+        Retrieves the first quote from the database.
+    delete_first_quote() -> bool
+        Deletes the first quote from the database.
 
     Parameters
     ----------
@@ -154,7 +160,6 @@ class DatabaseHandler:
         ----------
         Exception
             if there is an error while deleting.
-        
         """
 
         try:
@@ -183,7 +188,6 @@ class DatabaseHandler:
         ----------
         Exception
             if there is an error while retrieving emails.
-        
         """
 
         try:
@@ -195,6 +199,29 @@ class DatabaseHandler:
             return []
     
     def upload_quotes_to_db(self, quotes):
+        '''
+        Uploads a list of quotes to the database.
+
+        Parameters
+        ----------
+        quotes : list of dict
+            A list of dictionaries, where each dictionary represents a quote with two keys:
+            - 'quote': The text of the quote.
+            - 'author': The author of the quote.
+            
+        Returns
+        -------
+        bool
+            Returns `True` if all quotes were successfully uploaded to the database. 
+            Returns `False` if an error occurred during the process.
+            
+        Exceptions
+        ----------
+        Exception
+            Any exceptions raised during the database insertion process will be caught and logged. 
+            The method will return `False` if an error occurs.
+        '''
+
         try:
             session = self.Session()
             for quote in quotes:
@@ -220,6 +247,7 @@ class DatabaseHandler:
         Exception
             If any error occurs while querying the database, an exception will be caught and printed.
         '''
+
         try:
             session = self.Session()
             quote = session.query(Quote).first()
@@ -228,10 +256,27 @@ class DatabaseHandler:
             print(f"Error while getting the first quote from the db: {e}")
     
     def delete_first_quote(self):
+        '''
+        Deletes the first quote from the database.
+
+        Returns
+        -------
+        bool
+            Returns `True` if the first quote was successfully deleted. Returns `False` if there was an error 
+            during the deletion process or if no quotes were found in the database.
+            
+        Exceptions
+        ----------
+        Exception
+            Any exceptions raised during the deletion process will be caught, and an error message will be logged.
+        '''
+
         try:
             session = self.Session()
             quote = session.query(Quote).first()
             session.delete(quote)
             session.commit()
+            return True
         except Exception as e:
             print(f"Error while deleting the first quote from the db: {e}")
+            return False

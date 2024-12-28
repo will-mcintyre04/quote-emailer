@@ -23,7 +23,7 @@ class QuoteBot:
     Methods
     ------
     send_email()
-        fetches quote from api and sends email to all addresses in database
+        fetches quote from database and sends email to all addresses in database
     add_subscribers(emails)
         add the emails into the database
     show_status()
@@ -47,7 +47,22 @@ class QuoteBot:
         self.email_handler = EmailHandler(email, password)
 
     def send_email(self):
-        '''Sends an email fetched from the api to the emails stored in the database'''
+        '''
+        Sends quote of the day email to all stored email addresses
+
+        Returns
+        -------
+        None
+            This method does not return a value. It either sends an email or logs an error message.
+            
+        Exceptions
+        ----------
+        Exception
+            This method assumes that the individual handler methods (e.g., `get_first_quote`, `fetch_quotes`, 
+            `upload_quotes_to_db`, `get_emails`, and `send`) handle their own exceptions. Any issues within those 
+            methods will be logged or handled accordingly.
+        '''
+        
         quote = self.db_handler.get_first_quote()
         if not quote:
             quotes = self.quote_handler.fetch_quotes()
@@ -66,6 +81,9 @@ class QuoteBot:
             return 
         
         self.email_handler.send("Quote of the Day", quote.quote, quote.author, emails)
+        
+        # Delete the quote after getting sent
+        self.db_handler.delete_first_quote()
 
     def add_subscribers(self, emails):
         '''

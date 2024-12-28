@@ -7,7 +7,7 @@ class QuoteHandler():
     Attributes
     ----------
     api_url : str
-        url of the zenquotes api receiving a random quote
+        url of the zenquotes api receiving quotes
     
     Methods
     -------
