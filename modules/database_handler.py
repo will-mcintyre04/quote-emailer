@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from modules.models import Email, Base
+from modules.models import Email, Base, Quote
 import os
 
 class DatabaseHandler:
@@ -193,3 +193,45 @@ class DatabaseHandler:
         except Exception as e:
             print(f"Error while retrieving emails: {e}")
             return []
+    
+    def upload_quotes_to_db(self, quotes):
+        try:
+            session = self.Session()
+            for quote in quotes:
+                new_quote = Quote(quote = quote['quote'], author = quote['author']);
+                session.add(new_quote)
+                session.commit()
+            return True
+        except Exception as e:
+            print(f"Error while inserting quotes into db: {e}")
+            return False
+
+    def get_first_quote(self):
+        '''
+        Retrieves the first quote from the database.
+
+        Returns
+        -------
+        Quote or None
+            The first quote object from the database if present, otherwise None.
+            
+        Exceptions
+        ----------
+        Exception
+            If any error occurs while querying the database, an exception will be caught and printed.
+        '''
+        try:
+            session = self.Session()
+            quote = session.query(Quote).first()
+            return quote
+        except Exception as e:
+            print(f"Error while getting the first quote from the db: {e}")
+    
+    def delete_first_quote(self):
+        try:
+            session = self.Session()
+            quote = session.query(Quote).first()
+            session.delete(quote)
+            session.commit()
+        except Exception as e:
+            print(f"Error while deleting the first quote from the db: {e}")

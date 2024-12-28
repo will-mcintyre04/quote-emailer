@@ -1,4 +1,3 @@
-import argparse
 from modules.quote_bot import QuoteBot
 from modules.config import config_env
 from modules.parser import parse_arguments

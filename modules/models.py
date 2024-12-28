@@ -9,3 +9,10 @@ class Email(Base):
 
     id = Column(Integer, primary_key=True)
     address = Column(String, unique=True)
+
+class Quote(Base):
+    __tablename__ = 'quotes'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    quote = Column(String)
+    author = Column(String)

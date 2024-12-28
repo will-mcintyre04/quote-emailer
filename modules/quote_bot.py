@@ -48,10 +48,24 @@ class QuoteBot:
 
     def send_email(self):
         '''Sends an email fetched from the api to the emails stored in the database'''
-        quote, author = self.quote_handler.fetch()
-        if quote and author:
-            emails = self.db_handler.get_emails()
-            self.email_handler.send("Quote of the Day", quote, author, emails)
+        quote = self.db_handler.get_first_quote()
+        if not quote:
+            quotes = self.quote_handler.fetch_quotes()
+
+            if not self.db_handler.upload_quotes_to_db(quotes):
+                return
+            
+            quote = self.db_handler.get_first_quote()
+            if not quote:
+                print("No quotes found in the database after uploading.")
+                return
+            
+        emails = self.db_handler.get_emails()
+        if not emails:
+            print("No emails found in the database.")
+            return 
+        
+        self.email_handler.send("Quote of the Day", quote.quote, quote.author, emails)
 
     def add_subscribers(self, emails):
         '''
@@ -89,6 +103,7 @@ class QuoteBot:
                 print(f"{i}. {subscriber_email.address}")
         else:
             print("No subscribers in the list.")
+            return
 
     def delete_subscribers(self, emails):
         '''Deletes the passed email from the database'''
