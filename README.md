@@ -4,6 +4,7 @@
 **Date:** 2023-09-07
 
 [![Python](https://img.shields.io/badge/Python-306998?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-FF4500?style=for-the-badge&logo=sqlalchemy&logoColor=white)](https://www.sqlalchemy.org/)
 [![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/index.html)
 [![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
@@ -16,7 +17,7 @@ This script encapsulates the back-end database management/editing, quote API fet
 
 Mindfuel is a web application designed to inspire and motivate its users with daily quotes delivered to their inbox. This Python script automates the process by fetching motivational quotes from the ZenQuotes API and sending them to subscribers via email.
 
->See below for an example of the email template.
+>See below for an example of the email template:
 <div align= "center">
 <img src = "https://github.com/will-mcintyre04/flask-practice/assets/78566536/daf2ba44-45aa-4e9a-83db-7e6c81aeb531" style="width: 800px;">
 </div><br>
