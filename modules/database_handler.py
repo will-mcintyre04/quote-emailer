@@ -6,37 +6,6 @@ import os
 class DatabaseHandler:
     '''
     Handler that connects to and edits the database dependant on environment.
-
-    Attributes
-    ----------
-    engine : sqlalchemy.engine.base.Engine
-        The database engine that establishes the connection to the database.
-    Session : sqlalchemy.orm.session.Session
-        Session factory for creating individual connections to the database.
-
-    Methods
-    -------
-    connect()
-        Connects to the database and initializes tables if they do not exist.
-    email_exists(email: str) -> bool
-        Checks if an email exists in the database.
-    insert_emails(emails: list)
-        Inserts new emails into the database.
-    delete_emails(emails: list)
-        Deletes emails from the database.
-    get_emails() -> list
-        Retrieves a list of email objects from the database.
-    upload_quotes_to_db(quotes: list)
-        Uploads a list of quotes to the database.
-    get_first_quote() -> Quote or None
-        Retrieves the first quote from the database.
-    delete_first_quote() -> bool
-        Deletes the first quote from the database.
-
-    Parameters
-    ----------
-    database_type : str
-        The configuration environment (production or development)
      '''
     def __init__(self, database_type):
         """

@@ -9,16 +9,11 @@ def main():
     """
 
     try:   
-        # Parse command-line arguments
         args = parse_arguments()
-
-        # Load and config environment variables
         EMAIL, PASS, DB_CONFIG = config_env(args)
 
-        # Create Bot
         bot = QuoteBot(EMAIL, PASS, DB_CONFIG)
 
-        # Check for arguments and impliment respective requests
         if args.status:
             bot.show_status()
         if args.add:

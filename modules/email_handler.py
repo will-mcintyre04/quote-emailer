@@ -6,20 +6,6 @@ import os
 class EmailHandler:
     '''
     Handler for sending emails.
-
-    Attributes
-    ----------
-    email : str
-        the address of the sending email
-    password : str
-        the password of the sending email
-    html_template : str
-        name of the html template
-
-    Methods
-    -------
-    send(subject : str, quote : str, author : str, recipients : list[str])
-        Sends a formatted email to the recipient with the given subject and quote/author
     '''
 
     html_template = "email_template.html"
@@ -62,7 +48,6 @@ class EmailHandler:
             print("Recipient list is empty. No emails sent.")
             return
         try:
-            # Open the html template from the template folder
             with open(get_direct_path(os.path.join("templates", self.html_template)), 'r') as html_file:
                 html_template = html_file.read()
 

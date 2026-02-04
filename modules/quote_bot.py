@@ -10,26 +10,6 @@ class QuoteBot:
     - Sends emails to email addresses stored in the local database "quotes.db" with motivational
     quotes fetched from the ZenQuotes API (https://zenquotes.io/)
     - Edits and displays "email" table data, allowing insertion and deletion of subsriber emails.
-
-    Attributes
-    ----------
-    quote_handler : QuoteHandler()
-        handler for fetching quotes
-    db_handler : DatabaseHandler() 
-        handler for interacting the database
-    email_handler = EmailHandler()
-        handler for sending emails
-
-    Methods
-    ------
-    send_email()
-        fetches quote from database and sends email to all addresses in database
-    add_subscribers(emails)
-        add the emails into the database
-    show_status()
-        prints the current database configuration and lists the subscribers in the database to the terminal
-    delete_subscribers(emails)
-        deletes the emails from the database
     '''
 
     def __init__(self, email, password, database):
@@ -101,15 +81,6 @@ class QuoteBot:
         '''
         Shows the current database configuration and prints the list of all subscribers
         (emails in database) to the user.
-
-        Example
-        -------
-
-        Your current configuration environment: dev
-
-        List of Subscribers:        
-        1. email1@example.com
-        2. email2@example.com
         '''
 
         db_config = os.getenv("DB_CONFIG")

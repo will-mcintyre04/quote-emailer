@@ -3,16 +3,6 @@ import requests
 class QuoteHandler():
     '''
     Handler that works with the api to fetch_quotes a motivational quote.
-
-    Attributes
-    ----------
-    api_url : str
-        url of the zenquotes api receiving quotes
-    
-    Methods
-    -------
-    fetch_quotes()
-        makes a request to api, returns a list containing quotes and author strings
     '''
 
     def __init__ (self):
