@@ -82,7 +82,6 @@ class QuoteBot:
         Shows the current database configuration and prints the list of all subscribers
         (emails in database) to the user.
         '''
-
         db_config = os.getenv("DB_CONFIG")
         print(f"Your current configuration environment: {db_config}\n")
         subscribers = self.db_handler.get_emails()

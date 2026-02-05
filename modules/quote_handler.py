@@ -22,14 +22,6 @@ class QuoteHandler():
         -------
         list
             A list of dictionaries containing quote text and author name, or an empty list if no quotes are found or an error occurs.
-
-        Exceptions
-        ----------
-        requests.exceptions.RequestException
-            Raised if there is an error during the HTTP request (e.g., network issues, invalid URL, non-2xx status codes).
-            
-        KeyError
-            Raised if the expected keys (`'q'` or `'a'`) are missing in the API response data.
         '''
 
         try:
@@ -45,7 +37,7 @@ class QuoteHandler():
 
         except requests.exceptions.RequestException as e:
             # Handle any request-related exceptions (network issues, invalid URLs, etc.)
-            print(f"Error fetch_quotesing data: {e}")
+            print(f"Error fetch_quotes data: {e}")
             return []
 
         except KeyError as e:

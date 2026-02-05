@@ -8,47 +8,21 @@ class EmailHandler:
     Handler for sending emails.
     '''
 
-    html_template = "email_template.html"
+    html_template_file = "email_template.html"
 
     def __init__(self, email, password):
-        '''
-        Parameters
-        ----------
-        email : str
-            the address of the sending email
-        password : str
-            the password of the sending email
-        '''
-
         self.email = email
         self.password = password
 
     def send(self, subject, quote, author, recipients):
         '''
         Sends a formatted email to a list of recipients with a quote.
-
-        Parameters
-        ----------
-        subject : str
-            the subject of the email message
-        quote : str
-            quote string
-        author : str
-            name of the author of the quote
-        recipient : list[modules.models.Email]
-            list of modules.models.Email objects representing recipients
-
-        Exceptions
-        ----------
-        smtplib.SMTPException
-            if there is an error sending the email to the recipient
-
         '''
         if not recipients:
             print("Recipient list is empty. No emails sent.")
             return
         try:
-            with open(get_direct_path(os.path.join("templates", self.html_template)), 'r') as html_file:
+            with open(get_direct_path(os.path.join("templates", self.html_template_file)), 'r') as html_file:
                 html_template = html_file.read()
 
             # Send the emails to each recipient
@@ -74,3 +48,7 @@ class EmailHandler:
                     print(f"Email sent to {recipient.address} succesfully")
         except smtplib.SMTPException as e:
             print(f"Error sending email: {e}")
+        except FileNotFoundError:
+            print(f"Template file not found at {self.html_template_file}")
+        except Exception as e:
+            print(f"Unexpected error: {e}")

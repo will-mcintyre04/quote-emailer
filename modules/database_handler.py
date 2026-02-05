@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from modules.models import Email, Base, Quote
+from contextlib import contextmanager
 import os
 
 class DatabaseHandler:
@@ -42,9 +43,24 @@ class DatabaseHandler:
         # Factory that establishes connection to db
         self.engine = create_engine(database_url)
         # Individual connections to db for abstract/high level interaction
-        self.Session = sessionmaker(bind=self.engine)
+        self.Session = sessionmaker(
+            bind=self.engine,
+            expire_on_commit=False
+        )
 
         self.connect()
+
+    @contextmanager
+    def session_scope(self):
+        session = self.Session()
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
     def connect(self):
         """
@@ -92,77 +108,42 @@ class DatabaseHandler:
     def insert_emails(self, emails):
         """
         Inserts the list of emails into the database.
-
-        Parameters
-        ----------
-        emails : list 
-            list of email addresses to check.
-        
-        Exceptions
-        ----------
-            if there is an error while inserting.
         """
-
         try:
-            session = self.Session()
-            for email in emails:
-                if self.email_exists(email):
-                    print(f"Subscriber {email} already exists in the list.")
-                else:
-                    new_email = Email(address=email)
-                    session.add(new_email)
-                    session.commit()
-                    print(f"Subscriber {email} added successfully!")
+            with self.session_scope() as session:
+                for email_addr in emails:
+                    exists = session.query(Email).filter_by(address=email_addr).first()
+                    if exists:
+                        print(f"Subscriber {email_addr} already exists in the list.")
+                    else:
+                        session.add(Email(address=email_addr))
+                        print(f"Subscriber {email_addr} added successfully!")
         except Exception as e:
             print(f"Error while inserting email: {e}")
 
     def delete_emails(self, emails):
         """
         Deletes the list of emails from the database.
-
-        Parameters
-        ----------
-        emails : list
-            list of email addresses to remove.
-        
-        Exceptions
-        ----------
-        Exception
-            if there is an error while deleting.
         """
-
         try:
-            session = self.Session()
-            for email in emails:
-                if self.email_exists(email):
-                    email_to_delete = session.query(Email).filter_by(address=email).first()
-                    session.delete(email_to_delete)
-                    session.commit()
-                    print(f"Email {email} successfully deleted.")
-                else:
-                    print(f"Email {email} does not exist in the database.")
+            with self.session_scope() as session:
+                for email_addr in emails:
+                    email = session.query(Email).filter_by(address=email_addr).first()
+                    if email:
+                        session.delete(email)
+                        print(f"Email {email_addr} successfully deleted.")
+                    else:
+                        print(f"Email {email_addr} does not exist.")
         except Exception as e:
-            print(f"Error while deleting email: {e}")
+            print(f"Error while deleting emails: {e}")
 
     def get_emails(self):
         """
         Returns a list of modules.models.Email objects from the database.
-
-        Returns
-        -------
-        list
-            returns a list of modules.models.Email objects in the database, empty list if empty.
-        
-        Exceptions
-        ----------
-        Exception
-            if there is an error while retrieving emails.
-        """
-
+        """ 
         try:
-            session = self.Session()
-            emails = session.query(Email).all()
-            return emails
+            with self.session_scope() as session:
+                return session.query(Email).all()
         except Exception as e:
             print(f"Error while retrieving emails: {e}")
             return []
@@ -170,82 +151,38 @@ class DatabaseHandler:
     def upload_quotes_to_db(self, quotes):
         '''
         Uploads a list of quotes to the database.
-
-        Parameters
-        ----------
-        quotes : list of dict
-            A list of dictionaries, where each dictionary represents a quote with two keys:
-            - 'quote': The text of the quote.
-            - 'author': The author of the quote.
-            
-        Returns
-        -------
-        bool
-            Returns `True` if all quotes were successfully uploaded to the database. 
-            Returns `False` if an error occurred during the process.
-            
-        Exceptions
-        ----------
-        Exception
-            Any exceptions raised during the database insertion process will be caught and logged. 
-            The method will return `False` if an error occurs.
         '''
-
         try:
-            session = self.Session()
-            for quote in quotes:
-                new_quote = Quote(quote = quote['quote'], author = quote['author']);
-                session.add(new_quote)
-                session.commit()
-            return True
+            with self.session_scope() as session:
+                for q in quotes:
+                    session.add(Quote(quote=q['quote'], author=q['author']))
+                return True
         except Exception as e:
-            print(f"Error while inserting quotes into db: {e}")
+            print(f"Error while inserting quotes: {e}")
             return False
 
     def get_first_quote(self):
         '''
         Retrieves the first quote from the database.
-
-        Returns
-        -------
-        Quote or None
-            The first quote object from the database if present, otherwise None.
-            
-        Exceptions
-        ----------
-        Exception
-            If any error occurs while querying the database, an exception will be caught and printed.
         '''
-
         try:
-            session = self.Session()
-            quote = session.query(Quote).first()
-            return quote
+            with self.session_scope() as session:
+                return session.query(Quote).first()
         except Exception as e:
-            print(f"Error while getting the first quote from the db: {e}")
+            print(f"Error while getting first quote: {e}")
+            return None
     
     def delete_first_quote(self):
         '''
         Deletes the first quote from the database.
-
-        Returns
-        -------
-        bool
-            Returns `True` if the first quote was successfully deleted. Returns `False` if there was an error 
-            during the deletion process or if no quotes were found in the database.
-            
-        Exceptions
-        ----------
-        Exception
-            Any exceptions raised during the deletion process will be caught, and an error message will be logged.
         '''
-
         try:
-            session = self.Session()
-            quote = session.query(Quote).first()
-            session.delete(quote)
-            session.commit()
-            return True
+            with self.session_scope() as session:
+                quote = session.query(Quote).first()
+                if quote:
+                    session.delete(quote)
+                    return True
+                return False
         except Exception as e:
-            print(f"Error while deleting the first quote from the db: {e}")
+            print(f"Error while deleting first quote: {e}")
             return False
