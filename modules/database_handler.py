@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from modules.models import Email, Base, Quote
 from contextlib import contextmanager
 import os
+import sys
 
 class DatabaseHandler:
     '''
@@ -18,6 +19,7 @@ class DatabaseHandler:
         If the database type is 'development', connects to SQLite.
         """
 
+        connect_args = {}
         database_type = database_type.upper()
         if database_type in ["DEVELOPMENT", "DEV"]:
             database_url = "sqlite:///emails.db"
@@ -25,6 +27,7 @@ class DatabaseHandler:
             database_url = os.getenv("MYSQL_URI")
             if not database_url:
                 raise ValueError("No production MySQL URI provided.")
+            connect_args = {"connect_timeout" : 5},
         else:
             raise ValueError("Invalid database configuration provided. \
                              Choose 'development' or 'production'.")
@@ -32,9 +35,7 @@ class DatabaseHandler:
         # Factory that establishes connection to db
         self.engine = create_engine(
             database_url,
-            connect_args={
-                "connect_timeout" : 5
-            },
+            connect_args=connect_args,
             pool_pre_ping=True
         )
         # Individual connections to db for abstract/high level interaction
@@ -66,19 +67,7 @@ class DatabaseHandler:
             Base.metadata.create_all(self.engine)
         except Exception as e:
             print(f"Error connecting to database: {e}")
-
-    def email_exists(self, email):
-        """
-        Checks if an email is in the database.
-        """
-
-        try:
-            session = self.Session()
-            count = session.query(Email).filter_by(address=email).count()
-            return count > 0
-        except Exception as e:
-            print(f"Error while checking if email exists: {e}")
-            return False
+            sys.exit(1)
 
     def insert_emails(self, emails):
         """

@@ -2,6 +2,7 @@ import smtplib
 from email.message import EmailMessage
 from modules.path_helper import get_direct_path
 import os
+import sys
 
 class EmailHandler:
     '''
@@ -48,7 +49,7 @@ class EmailHandler:
                     print(f"Email sent to {recipient.address} succesfully")
         except smtplib.SMTPException as e:
             print(f"Error sending email: {e}")
-        except FileNotFoundError:
-            print(f"Template file not found at {self.html_template_file}")
+            sys.exit(1)
         except Exception as e:
             print(f"Unexpected error: {e}")
+            sys.exit(1)

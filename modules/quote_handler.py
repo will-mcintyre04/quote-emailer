@@ -1,12 +1,11 @@
 import requests
+import sys
 
 class QuoteHandler():
     '''
     Handler that works with the api to fetch_quotes a motivational quote.
     '''
-
-    def __init__ (self):
-        self.api_url = "https://zenquotes.io/api/quotes"
+    api_irl = "https://zenquotes.io/api/quotes"
     def fetch_quotes(self):
         '''
         Makes a request to the ZenQuotes API, returning a list of quotes with the following format:
@@ -17,11 +16,6 @@ class QuoteHandler():
         }]
 
         If there are no quotes or an error occurs, returns an empty list.
-
-        Returns
-        -------
-        list
-            A list of dictionaries containing quote text and author name, or an empty list if no quotes are found or an error occurs.
         '''
 
         try:
@@ -38,9 +32,9 @@ class QuoteHandler():
         except requests.exceptions.RequestException as e:
             # Handle any request-related exceptions (network issues, invalid URLs, etc.)
             print(f"Error fetch_quotes data: {e}")
-            return []
+            sys.exit(1)
 
         except KeyError as e:
             # Handle missing keys in the response data
             print(f"Missing key in the response data: {e}")
-            return []
+            sys.exit(1)
