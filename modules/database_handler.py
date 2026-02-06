@@ -7,7 +7,7 @@ import os
 class DatabaseHandler:
     '''
     Handler that connects to and edits the database dependant on environment.
-     '''
+    '''
     def __init__(self, database_type):
         """
         Establishes a connection to the engine and creates a sessionmaker
@@ -16,17 +16,6 @@ class DatabaseHandler:
         If the database type is 'production', connects to the PythonAnywhere 
         MySQL database.
         If the database type is 'development', connects to SQLite.
-
-        Parameters
-        ----------
-        database_type : str
-            the configuration for the database ('production' or 'development').
-        
-        Raises
-        ------
-        ValueError
-            if the database configuration type is invalid or no production
-            uri is inputted.
         """
 
         database_type = database_type.upper()
@@ -41,11 +30,17 @@ class DatabaseHandler:
                              Choose 'development' or 'production'.")
         
         # Factory that establishes connection to db
-        self.engine = create_engine(database_url)
+        self.engine = create_engine(
+            database_url,
+            connect_args={
+                "connect_timeout" : 5
+            },
+            pool_pre_ping=True
+        )
         # Individual connections to db for abstract/high level interaction
         self.Session = sessionmaker(
             bind=self.engine,
-            expire_on_commit=False
+            expire_on_commit=False,
         )
 
         self.connect()
@@ -65,11 +60,6 @@ class DatabaseHandler:
     def connect(self):
         """
         Connects the the database and initializes tables if they do not exist.
-
-        Exceptions
-        ----------
-        Exception
-            if there is an error while connecting to the database.
         """
 
         try:
@@ -80,21 +70,6 @@ class DatabaseHandler:
     def email_exists(self, email):
         """
         Checks if an email is in the database.
-
-        Parameters
-        ----------
-        email : str
-            email address to check.
-
-        Returns
-        -------
-        bool
-            true if the email exists in the database, otherwise false.
-
-        Exceptions
-        ---------
-        Exception
-            if there is an error while checking the email.
         """
 
         try:
